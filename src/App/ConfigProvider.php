@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Handler\AuthHandler;
 use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
 /**
@@ -21,7 +20,7 @@ class ConfigProvider
      * method which returns an array with its configuration.
      *
      */
-    public function __invoke() : array
+    public function __invoke(): array
     {
         return [
             'dependencies' => $this->getDependencies(),
@@ -32,24 +31,24 @@ class ConfigProvider
     /**
      * Returns the container dependencies
      */
-    public function getDependencies() : array
+    public function getDependencies(): array
     {
         return [
             'invokables' => [
-                AuthHandler::class => AuthHandler::class,
                 Cache\ProviderCacheInterface::class => Cache\MemoryProviderCache::class,
-                Filter\RequirementFilter::class => Filter\RequirementFilter::class,
-                \Github\Client::class => \Github\Client::class,
-                \Packagist\Api\Client::class => \Packagist\Api\Client::class
+                Filter\RequirementFilter::class     => Filter\RequirementFilter::class,
+                \Github\Client::class               => \Github\Client::class,
+                \Packagist\Api\Client::class        => \Packagist\Api\Client::class
             ],
             'factories'  => [
+                Handler\AuthHandler::class                 => ReflectionBasedAbstractFactory::class,
                 Middleware\AuthenticationMiddleware::class => ReflectionBasedAbstractFactory::class,
-                Service\PackagistService::class => ReflectionBasedAbstractFactory::class,
-                Provider\PackagistProvider::class => ReflectionBasedAbstractFactory::class,
-                Service\GithubService::class => ReflectionBasedAbstractFactory::class,
-                Provider\GithubProvider::class => ReflectionBasedAbstractFactory::class,
-                Handler\HomePageHandler::class => ReflectionBasedAbstractFactory::class,
-                Handler\RepositoryHandler::class => ReflectionBasedAbstractFactory::class
+                Service\PackagistService::class            => ReflectionBasedAbstractFactory::class,
+                Provider\PackagistProvider::class          => ReflectionBasedAbstractFactory::class,
+                Service\GithubService::class               => ReflectionBasedAbstractFactory::class,
+                Provider\GithubProvider::class             => ReflectionBasedAbstractFactory::class,
+                Handler\HomePageHandler::class             => ReflectionBasedAbstractFactory::class,
+                Handler\RepositoryHandler::class           => ReflectionBasedAbstractFactory::class
             ],
         ];
     }
@@ -57,7 +56,7 @@ class ConfigProvider
     /**
      * Returns the templates configuration
      */
-    public function getTemplates() : array
+    public function getTemplates(): array
     {
         return [
             'paths' => [

@@ -35,15 +35,8 @@ use Zend\Expressive\MiddlewareFactory;
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->get('/repo/{owner}/{repo}', [
-        \Zend\Expressive\Session\SessionMiddleware::class,
         App\Middleware\AuthenticationMiddleware::class,
         App\Handler\RepositoryHandler::class
     ], 'issues');
-    $app->get('/auth', [
-        \Zend\Expressive\Session\SessionMiddleware::class,
-        App\Handler\AuthHandler::class
-    ], 'auth');
-//    $app->get('/login', [
-//        App\Handler\LoginHandler::class
-//    ], 'login');
+    $app->get('/auth', App\Handler\AuthHandler::class, 'auth');
 };

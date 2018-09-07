@@ -8,12 +8,20 @@ use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Response\RedirectResponse;
+use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Expressive\Session\SessionInterface;
 use Zend\Expressive\Session\SessionMiddleware;
+use Zend\Expressive\Template\TemplateRendererInterface;
 
 class AuthHandler implements RequestHandlerInterface
 {
+    private $template;
+
+    public function __construct(TemplateRendererInterface $template)
+    {
+        $this->template = $template;
+    }
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $client = new Client(['base_uri' => 'https://github.com']);
@@ -32,7 +40,6 @@ class AuthHandler implements RequestHandlerInterface
         $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
         $session->set(AuthenticationMiddleware::AUTH_TOKEN, $content['access_token']);
 
-        return new RedirectResponse('/');
+        return new HtmlResponse($this->template->render('app::auth'));
     }
-
 }

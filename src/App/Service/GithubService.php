@@ -34,7 +34,7 @@ class GithubService
      */
     public function buildIssueFilterUri(array $repositories): string
     {
-        $uriParts = array_reduce($repositories, function($carry, Repository $repo) {
+        $uriParts = array_reduce($repositories, function ($carry, Repository $repo) {
             $carry[] = 'repo:'.$repo->name;
             return $carry;
         }, []);

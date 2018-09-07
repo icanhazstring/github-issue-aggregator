@@ -40,5 +40,4 @@ class RepositoryHandler implements RequestHandlerInterface
 
 //        return new HtmlResponse($this->template->render('app::issues', []));
     }
-
 }

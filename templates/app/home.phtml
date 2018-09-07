@@ -1,0 +1,32 @@
+<?php $this->layout('layout::default', ['title' => 'Home']) ?>
+
+<div>
+    <form id="repo_form">
+        <label for="repo">Source Repository:</label>
+        https://github.com/<input style="width: 200px" name="repo" id="repo" type="text" title="Source Repository"/>
+        <button>Submit</button>
+    </form>
+</div>
+
+<?php if (!$hasToken): ?>
+<div>
+    <a id="login" href="https://github.com/login/oauth/authorize?scope=user:email&client_id=<?= $clientId ?>">Login with github</a>
+</div>
+<?php endif; ?>
+
+<script type="application/javascript">
+    document.getElementById("repo_form").addEventListener("submit", function(event) {
+        let repo = document.getElementById("repo").value;
+        event.preventDefault();
+
+        if (repo) {
+            window.open("/repo/" + repo);
+        }
+    });
+
+    document.getElementById("login").addEventListener("click", function(event) {
+        event.preventDefault();
+        window.open(event.srcElement.getAttribute("href"));
+    });
+
+</script>

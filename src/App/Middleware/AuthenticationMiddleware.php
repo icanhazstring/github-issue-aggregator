@@ -35,5 +35,4 @@ class AuthenticationMiddleware implements MiddlewareInterface
         $this->client->authenticate($session->get(self::AUTH_TOKEN), null, Client::AUTH_HTTP_TOKEN);
         return $handler->handle($request);
     }
-
 }
