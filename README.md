@@ -1,2 +1,1 @@
-# phpunit-issues
-Issue aggregation for phpunit and dependencies
+# github-issue-aggregator
