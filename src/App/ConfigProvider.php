@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Handler\AuthHandler;
 use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
 /**
@@ -35,12 +36,14 @@ class ConfigProvider
     {
         return [
             'invokables' => [
+                AuthHandler::class => AuthHandler::class,
                 Cache\ProviderCacheInterface::class => Cache\MemoryProviderCache::class,
                 Filter\RequirementFilter::class => Filter\RequirementFilter::class,
                 \Github\Client::class => \Github\Client::class,
                 \Packagist\Api\Client::class => \Packagist\Api\Client::class
             ],
             'factories'  => [
+                Middleware\AuthenticationMiddleware::class => ReflectionBasedAbstractFactory::class,
                 Service\PackagistService::class => ReflectionBasedAbstractFactory::class,
                 Provider\PackagistProvider::class => ReflectionBasedAbstractFactory::class,
                 Service\GithubService::class => ReflectionBasedAbstractFactory::class,

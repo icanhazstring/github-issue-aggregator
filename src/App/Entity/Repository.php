@@ -15,11 +15,8 @@ use Zend\Stdlib\ArrayObject;
  */
 class Repository extends ArrayObject
 {
-    public function __construct(string $name, string $repository)
+    public function __construct($data)
     {
-        parent::__construct([
-            'name' => $name,
-            'repository' => $repository
-        ], self::ARRAY_AS_PROPS);
+        parent::__construct($data, self::ARRAY_AS_PROPS);
     }
 }

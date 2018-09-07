@@ -23,7 +23,7 @@ class PackagistServiceTest extends TestCase
         $provider->loadPackage('test/package')->shouldBeCalled()->willReturn($package->reveal());
         $service = new PackagistService($provider->reveal());
 
-        $this->assertSame(['test/package' => 'https://test.url'], $service->resolvePackageRepository('test/package'));
+        $this->assertEquals('https://test.url', $service->resolvePackageRepository('test/package'));
     }
 
     /**
@@ -33,10 +33,10 @@ class PackagistServiceTest extends TestCase
     public function itShouldResolveMultiplePackageUrls(): void
     {
         $package1 = $this->prophesize(Package::class);
-        $package1->getRepository()->shouldBeCalled()->willReturn('https://package1.url');
+        $package1->getRepository()->shouldBeCalled()->willReturn('https://github.com/test/realpackage1');
 
         $package2 = $this->prophesize(Package::class);
-        $package2->getRepository()->shouldBeCalled()->willReturn('https://package2.url');
+        $package2->getRepository()->shouldBeCalled()->willReturn('https://github.com/test/realpackage2');
 
         $provider = $this->prophesize(PackagistProvider::class);
         $provider->loadPackage('test/package1')->shouldBeCalled()->willReturn($package1->reveal());
@@ -48,12 +48,12 @@ class PackagistServiceTest extends TestCase
         $this->assertCount(2, $repositories);
 
         $this->assertEquals(
-            ['name' => 'test/package1', 'repository' => 'https://package1.url'],
+            ['name' => 'test/realpackage1', 'repository' => 'https://github.com/test/realpackage1'],
             $repositories[0]->getArrayCopy()
         );
 
         $this->assertEquals(
-            ['name' => 'test/package2', 'repository' => 'https://package2.url'],
+            ['name' => 'test/realpackage2', 'repository' => 'https://github.com/test/realpackage2'],
             $repositories[1]->getArrayCopy()
         );
     }

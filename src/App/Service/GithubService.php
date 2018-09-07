@@ -39,6 +39,9 @@ class GithubService
             return $carry;
         }, []);
 
+        $uriParts[] = 'is:open';
+        $uriParts[] = 'type:issue';
+
         return self::BASE_ISSUES_URI . urlencode(implode(' ', $uriParts));
     }
 }

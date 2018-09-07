@@ -24,10 +24,10 @@ class PackagistService
         $repositories = [];
 
         foreach ($requirements as $packageName => $version) {
-            $repositories[] = new Repository(
-                $this->resolvePackageName($packageName),
-                $this->resolvePackageRepository($packageName)
-            );
+            $repositories[] = new Repository([
+                'name'       => $this->resolvePackageName($packageName),
+                'repository' => $this->resolvePackageRepository($packageName)
+            ]);
         }
 
         return $repositories;

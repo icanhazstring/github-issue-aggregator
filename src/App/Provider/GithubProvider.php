@@ -14,8 +14,6 @@ class GithubProvider
     public function __construct(Client $client, ProviderCacheInterface $cache)
     {
         $this->client = $client;
-        $client->authenticate('6ad7ebbaa1326143bad897779f592d0f63e5c9fd', null, Client::AUTH_HTTP_TOKEN);
-
         $this->cache = $cache;
     }
 

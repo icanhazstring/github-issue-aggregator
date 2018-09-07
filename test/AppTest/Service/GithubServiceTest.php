@@ -48,14 +48,14 @@ class GithubServiceTest extends TestCase
         $provider = $this->prophesize(GithubProvider::class);
 
         $repositories = [
-            new Repository('test/package', 'url1'),
-            new Repository('test/package2', 'url2')
+            new Repository(['name' => 'test/package', 'repository' => 'url1']),
+            new Repository(['name' => 'test/package2', 'repository' => 'url2'])
         ];
 
         $service = new GithubService($provider->reveal(), new RequirementFilter());
 
         $this->assertEquals(
-            GithubService::BASE_ISSUES_URI . urlencode('repo:test/package repo:test/package2'),
+            GithubService::BASE_ISSUES_URI . urlencode('repo:test/package repo:test/package2 is:open type:issue'),
             $service->buildIssueFilterUri($repositories)
         );
     }
