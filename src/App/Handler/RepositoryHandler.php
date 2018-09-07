@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
+use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Expressive\Template;
 
 class RepositoryHandler implements RequestHandlerInterface
@@ -35,7 +36,9 @@ class RepositoryHandler implements RequestHandlerInterface
         $requirements = $this->githubService->getRootRequirements($owner, $repository);
         $repositories = $this->packagistService->resolveRepositories($requirements);
 
-        return new HtmlResponse($this->template->render('app::issues', []));
+        return new RedirectResponse($this->githubService->buildIssueFilterUri($repositories));
+
+//        return new HtmlResponse($this->template->render('app::issues', []));
     }
 
 }

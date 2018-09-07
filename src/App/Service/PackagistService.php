@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Entity\Repository;
 use App\Provider\PackagistProvider;
 
 class PackagistService
@@ -14,21 +15,33 @@ class PackagistService
         $this->provider = $provider;
     }
 
+    /**
+     * @param array $requirements
+     * @return Repository[]
+     */
     public function resolveRepositories(array $requirements): array
     {
         $repositories = [];
 
         foreach ($requirements as $packageName => $version) {
-            $repositories[] = $this->resolveRepository($packageName);
+            $repositories[] = new Repository(
+                $this->resolvePackageName($packageName),
+                $this->resolvePackageRepository($packageName)
+            );
         }
 
-        return array_merge(...$repositories);
+        return $repositories;
     }
 
-    public function resolveRepository(string $packageName): array
+    public function resolvePackageRepository(string $packageName): string
     {
-        $repositoryUrl = $this->provider->loadPackage($packageName)->getRepository();
+        return $this->provider->loadPackage($packageName)->getRepository();
+    }
 
-        return [$packageName => $repositoryUrl];
+    public function resolvePackageName(string $packageName): string
+    {
+        $repository = $this->provider->loadPackage($packageName)->getRepository();
+
+        return str_replace('https://github.com/', '', $repository);
     }
 }

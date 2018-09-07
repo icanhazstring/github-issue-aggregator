@@ -1,7 +1,19 @@
 <?php $this->layout('layout::default', ['title' => 'Home']) ?>
 
-<form>
+<form id="repo_form">
     <label for="repo">Source Repository:</label>
-    https://github.com/<input style="width: 200px" name="repo" type="text" title="Source Repository"/>
+    https://github.com/<input style="width: 200px" name="repo" id="repo" type="text" title="Source Repository"/>
     <button>Submit</button>
 </form>
+
+<script type="application/javascript">
+    let form = document.getElementById("repo_form");
+    form.addEventListener("submit", function(event) {
+        let repo = document.getElementById("repo").value;
+        event.preventDefault();
+
+        if (repo) {
+            window.location.pathname = "/repo/" + repo;
+        }
+    });
+</script>

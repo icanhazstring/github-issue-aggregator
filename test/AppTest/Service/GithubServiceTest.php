@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AppTest\Service;
 
+use App\Entity\Repository;
 use App\Filter\RequirementFilter;
 use App\Provider\GithubProvider;
 use App\Service\GithubService;
@@ -36,5 +37,26 @@ class GithubServiceTest extends TestCase
 
         $service = new GithubService($provider->reveal(), new RequirementFilter());
         $this->assertEquals($expected, $service->getRootRequirements('test', 'repo'));
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itShouldBuildCorrectIssueSearchQuery(): void
+    {
+        $provider = $this->prophesize(GithubProvider::class);
+
+        $repositories = [
+            new Repository('test/package', 'url1'),
+            new Repository('test/package2', 'url2')
+        ];
+
+        $service = new GithubService($provider->reveal(), new RequirementFilter());
+
+        $this->assertEquals(
+            GithubService::BASE_ISSUES_URI . urlencode('repo:test/package repo:test/package2'),
+            $service->buildIssueFilterUri($repositories)
+        );
     }
 }

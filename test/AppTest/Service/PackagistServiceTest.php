@@ -23,7 +23,7 @@ class PackagistServiceTest extends TestCase
         $provider->loadPackage('test/package')->shouldBeCalled()->willReturn($package->reveal());
         $service = new PackagistService($provider->reveal());
 
-        $this->assertSame(['test/package' => 'https://test.url'], $service->resolveRepository('test/package'));
+        $this->assertSame(['test/package' => 'https://test.url'], $service->resolvePackageRepository('test/package'));
     }
 
     /**
@@ -44,13 +44,33 @@ class PackagistServiceTest extends TestCase
 
         $service = new PackagistService($provider->reveal());
 
-        $expected = [
-            'test/package1' => 'https://package1.url',
-            'test/package2' => 'https://package2.url'
-        ];
+        $repositories = $service->resolveRepositories(['test/package1' => '^2.0', 'test/package2' => '^1.0']);
+        $this->assertCount(2, $repositories);
 
-        $actual = $service->resolveRepositories(['test/package1' => '^2.0', 'test/package2' => '^1.0']);
+        $this->assertEquals(
+            ['name' => 'test/package1', 'repository' => 'https://package1.url'],
+            $repositories[0]->getArrayCopy()
+        );
 
-        $this->assertSame($expected, $actual);
+        $this->assertEquals(
+            ['name' => 'test/package2', 'repository' => 'https://package2.url'],
+            $repositories[1]->getArrayCopy()
+        );
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itShouldResolveRealRepositoryNameByPackageName(): void
+    {
+        $package = $this->prophesize(Package::class);
+        $package->getRepository()->shouldBeCalled()->willReturn('https://github.com/test/package');
+
+        $provider = $this->prophesize(PackagistProvider::class);
+        $provider->loadPackage('test/awesomepackage')->shouldBeCalled()->willReturn($package->reveal());
+
+        $service = new PackagistService($provider->reveal());
+        $this->assertEquals('test/package', $service->resolvePackageName('test/awesomepackage'));
     }
 }

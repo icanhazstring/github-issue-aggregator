@@ -35,11 +35,14 @@ class ConfigProvider
     {
         return [
             'invokables' => [
+                Cache\ProviderCacheInterface::class => Cache\MemoryProviderCache::class,
                 Filter\RequirementFilter::class => Filter\RequirementFilter::class,
                 \Github\Client::class => \Github\Client::class,
                 \Packagist\Api\Client::class => \Packagist\Api\Client::class
             ],
             'factories'  => [
+                Service\PackagistService::class => ReflectionBasedAbstractFactory::class,
+                Provider\PackagistProvider::class => ReflectionBasedAbstractFactory::class,
                 Service\GithubService::class => ReflectionBasedAbstractFactory::class,
                 Provider\GithubProvider::class => ReflectionBasedAbstractFactory::class,
                 Handler\HomePageHandler::class => ReflectionBasedAbstractFactory::class,
