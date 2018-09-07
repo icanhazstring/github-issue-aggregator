@@ -12,7 +12,7 @@ dependencies:
     Host https://api.github.com
     Accept: application/vnd.github.v3.raw
 
-### 2. parse root dependencies
+### 2. parse root dependencies (check)
 - pattern `/owner\/repo/`
 - save owner/repo to get issues
   - read repo from packagist api
@@ -21,7 +21,10 @@ dependencies:
   - parse repository from 
   -     {repository: "https:\/\/github.com\/sebastianbergmann\/version"}
 
-### 3. load issues
+### 3. github oauth
+- login using github oauth for personal access token
+
+### 4. load issues
 
     GET repos/:owner/:repo/issues
     Host: https://api.github.com/
@@ -33,3 +36,7 @@ Content:
 - created_at
 - updated_at
 - state (open, closed)
+
+## access credentials
+- clientid: 5dc033f15a7550914993
+- clientsecret: 66c94c452b4f92e8c09fdbdb255f0fa1c73640a1
