@@ -1,4 +1,4 @@
 composer.phar
 /vendor/
-
+config/github.conf
 notes.md

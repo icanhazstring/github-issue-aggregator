@@ -8,6 +8,7 @@ use App\Filter\RequirementFilter;
 use App\Provider\GithubProvider;
 use App\Service\GithubService;
 use PHPUnit\Framework\TestCase;
+use Zend\Hydrator\HydratorInterface;
 
 class GithubServiceTest extends TestCase
 {
@@ -34,8 +35,9 @@ class GithubServiceTest extends TestCase
 
         $provider = $this->prophesize(GithubProvider::class);
         $provider->loadComposerJson('test', 'repo')->shouldBeCalled()->willReturn(json_encode($input));
+        $hydrator = $this->prophesize(HydratorInterface::class);
 
-        $service = new GithubService($provider->reveal(), new RequirementFilter());
+        $service = new GithubService($provider->reveal(), new RequirementFilter(), $hydrator->reveal());
         $this->assertEquals($expected, $service->getRootRequirements('test', 'repo'));
     }
 
@@ -46,13 +48,19 @@ class GithubServiceTest extends TestCase
     public function itShouldBuildCorrectIssueSearchQuery(): void
     {
         $provider = $this->prophesize(GithubProvider::class);
+        $hydrator = $this->prophesize(HydratorInterface::class);
 
-        $repositories = [
-            new Repository(['name' => 'test/package', 'repository' => 'url1']),
-            new Repository(['name' => 'test/package2', 'repository' => 'url2'])
-        ];
+        $repo1 = new Repository();
+        $repo1->setName('test/package');
+        $repo1->setUrl('url1');
 
-        $service = new GithubService($provider->reveal(), new RequirementFilter());
+        $repo2 = new Repository();
+        $repo2->setName('test/package2');
+        $repo2->setUrl('url2');
+
+        $repositories = [$repo1, $repo2];
+
+        $service = new GithubService($provider->reveal(), new RequirementFilter(), $hydrator->reveal());
 
         $this->assertEquals(
             GithubService::BASE_ISSUES_URI . urlencode('repo:test/package repo:test/package2 is:open type:issue'),

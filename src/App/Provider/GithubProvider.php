@@ -3,30 +3,36 @@ declare(strict_types=1);
 
 namespace App\Provider;
 
-use App\Cache\ProviderCacheInterface;
 use Github\Client;
 
 class GithubProvider
 {
     private $client;
-    private $cache;
 
-    public function __construct(Client $client, ProviderCacheInterface $cache)
+    public function __construct(Client $client)
     {
         $this->client = $client;
-        $this->cache = $cache;
     }
 
+    /**
+     * @param string $owner
+     * @param string $repository
+     * @return string
+     */
     public function loadComposerJson(string $owner, string $repository): string
     {
-        if ($this->cache->has(self::class, $owner . $repository)) {
-            return $this->cache->get(self::class, $owner . $repository);
-        }
-
         $response = $this->client->repository()->contents()->show($owner, $repository, 'composer.json');
-        $content = base64_decode($response['content']);
-        $this->cache->set(self::class, $owner . $repository, $content);
 
-        return $content;
+        return base64_decode($response['content']);
+    }
+
+    /**
+     * @param string $owner
+     * @param string $repository
+     * @return array
+     */
+    public function loadIssues(string $owner, string $repository): array
+    {
+        return $this->client->search()->issues(sprintf('repo:%s/%s+is:open+type:issue', $owner, $repository));
     }
 }

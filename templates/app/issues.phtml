@@ -1,1 +1,9 @@
-Issues
+<?php
+/**
+ * @var \App\Entity\Repository[] $repositories
+ */
+?>
+
+<?php foreach ($repositories as $repository): ?>
+<div>'<?= $this->e($repository->getPackageName()) ?>' => '<?= $this->e($repository->getName()) ?>'</div>
+<?php endforeach; ?>
