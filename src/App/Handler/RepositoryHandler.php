@@ -63,7 +63,8 @@ class RepositoryHandler implements RequestHandlerInterface
         return new HtmlResponse($this->template->render('app::issues', [
             'rootRepository' => $rootRepository,
             'repositories'   => $this->repositoryUtils->sortByLevenshteinDistance(
-                $rootRepository->getName(), $repositories
+                $rootRepository->getName(),
+                $repositories
             )
         ]));
     }

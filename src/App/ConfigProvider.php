@@ -42,6 +42,7 @@ class ConfigProvider
                 Utils\RepositoryUtils::class       => Utils\RepositoryUtils::class
             ],
             'factories'  => [
+                Aspect\ProviderCacheAspect::class          => Aspect\ProviderCacheAspectFactory::class,
                 Engine::class                              => Renderer\PlatesEngineFactory::class,
                 Hydrator\IssueHydrator::class              => Hydrator\IssueHydratorFactory::class,
                 Hydrator\Strategy\UserStrategy::class      => Hydrator\Strategy\UserStrategyFactory::class,
@@ -49,9 +50,9 @@ class ConfigProvider
                 Handler\AuthHandler::class                 => ReflectionBasedAbstractFactory::class,
                 Middleware\AuthenticationMiddleware::class => ReflectionBasedAbstractFactory::class,
                 Service\PackagistService::class            => Service\PackagistServiceFactory::class,
-                Provider\PackagistProvider::class          => ReflectionBasedAbstractFactory::class,
+                Provider\PackagistProvider::class          => Provider\PackagistProviderFactory::class,
                 Service\GithubService::class               => Service\GithubServiceFactory::class,
-                Provider\GithubProvider::class             => ReflectionBasedAbstractFactory::class,
+                Provider\GithubProvider::class             => Provider\GithubProviderFactory::class,
                 Handler\HomePageHandler::class             => ReflectionBasedAbstractFactory::class,
                 Handler\RepositoryHandler::class           => ReflectionBasedAbstractFactory::class
             ],

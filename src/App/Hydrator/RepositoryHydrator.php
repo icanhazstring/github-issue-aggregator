@@ -28,5 +28,4 @@ class RepositoryHydrator extends ClassMethods
 
         return parent::hydrate($data, $object);
     }
-
 }

@@ -2,16 +2,26 @@
 /**
  * @var string $clientId
  */
-$this->layout('layout::default', ['title' => 'Home']);
+$this->layout('layout::default', ['title' => 'Login']);
 ?>
-
-<h1 class="text-center text-uppercase">Aggregate Issues for your/repository</h1>
 
 <div>
     <p>
-        To use this aggregation you will need to login with Github.
+
     </p>
 
+
+</div>
+
+
+<div class="jumbotron">
+    <h1 class="display-4 text-center text-uppercase">Aggregate Issues for your/repository</h1>
+    <p class="lead">
+        Some project are split up into multiple packages which makes it harder to get an overview of open issues.
+        This little utility helps you to get a full list of issues from root requirements of a given package.
+    </p>
+    <hr class="my-4">
+    <p>To use this aggregation you will need to login with Github.</p>
     <form method="get" action="https://github.com/login/oauth/authorize">
         <input type="hidden" name="scope" value="user:email"/>
         <input type="hidden" name="client_id" value="<?= $this->e($clientId) ?>"/>

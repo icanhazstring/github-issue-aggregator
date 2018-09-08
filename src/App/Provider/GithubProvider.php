@@ -5,6 +5,12 @@ namespace App\Provider;
 
 use Github\Client;
 
+/**
+ * Class GithubProvider
+ *
+ * @package App\Provider
+ * @author  icanhazstring <blubb0r05+github@gmail.com>
+ */
 class GithubProvider
 {
     private $client;

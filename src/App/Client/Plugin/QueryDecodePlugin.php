@@ -25,5 +25,4 @@ class QueryDecodePlugin implements Plugin
 
         return $next($request->withUri($uri));
     }
-
 }

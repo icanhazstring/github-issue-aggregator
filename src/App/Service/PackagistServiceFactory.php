@@ -26,5 +26,4 @@ class PackagistServiceFactory implements FactoryInterface
             $container->get(RepositoryHydrator::class)
         );
     }
-
 }

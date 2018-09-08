@@ -27,5 +27,4 @@ class GithubClientFactory implements FactoryInterface
 
         return new Client($httpClientBuilder);
     }
-
 }
