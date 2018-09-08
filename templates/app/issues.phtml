@@ -1,9 +1,102 @@
 <?php
+$this->layout('layout::default', ['title' => 'Overview'])
 /**
  * @var \App\Entity\Repository[] $repositories
+ * @var \App\Entity\Repository   $rootRepository
  */
 ?>
+<div class="accordion" id="accordion">
+    <div class="card">
+        <div class="card-header" id="heading-root">
+            <div class="d-flex" data-toggle="collapse" data-target="#card-root">
+                <h5 class="mb-0">
+                    <span><?= $this->e($rootRepository->getPackageName()) ?></span>
+                    <span class="badge badge-warning"><?= $this->e($rootRepository->getIssueCount()) ?>
+                        open issues</span>
+                </h5>
+                <button class="btn btn-link btn-sm ml-auto" type="button">
+                    <i class="fas fa-angle-down"></i>
+                </button>
+            </div>
+            <a target="_blank" href="<?= $this->e($rootRepository->getUrl()) ?>"
+               class="badge badge-info"><?= $this->e($rootRepository->getUrl()); ?></a>
+        </div>
 
-<?php foreach ($repositories as $repository): ?>
-<div>'<?= $this->e($repository->getPackageName()) ?>' => '<?= $this->e($repository->getName()) ?>'</div>
-<?php endforeach; ?>
+        <div id="card-root" class="collapse" aria-labelledby="heading-root" data-parent="#accordion">
+            <div class="card-body">
+
+                <?php foreach ($rootRepository->getIssues() as $issue): ?>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="">
+                                <span class="badge badge-secondary">#<?= $this->e($issue->getNumber()) ?></span>
+                                <a href="<?= $this->e($issue->getHtmlUrl()) ?>" target="_blank" class="ml-2">
+                                    <?= $this->e($issue->getTitle()) ?>
+                                    <small class="fas fa-external-link-alt"></small>
+                                </a>
+                            </div>
+                            <small>
+                                created by
+                                <a href="<?= $this->e($issue->getUser()->getHtmlUrl()) ?>" class="d-inline-block">
+                                    <?= $this->e($issue->getUser()->getLogin()) ?>
+                                </a>
+                            </small>
+                        </div>
+                    </div>
+
+                <?php endforeach; ?>
+
+            </div>
+        </div>
+    </div>
+
+    <?php foreach ($repositories as $index => $repository): ?>
+        <div class="card">
+            <div class="card-header" id="heading-<?= $index ?>">
+                <div class="d-flex" data-toggle="collapse" data-target="#card-<?= $index ?>">
+                    <h5 class="mb-0">
+                        <span><?= $this->e($repository->getPackageName()) ?></span>
+                        <span class="badge badge-warning"><?= $this->e($repository->getIssueCount()) ?>
+                            open issues</span>
+                    </h5>
+                    <button class="btn btn-link btn-sm ml-auto" type="button">
+                        <i class="fas fa-angle-down"></i>
+                    </button>
+                </div>
+                <a target="_blank" href="<?= $this->e($repository->getUrl()) ?>"
+                   class="badge badge-info"><?= $this->e($repository->getUrl()); ?></a>
+            </div>
+
+            <div id="card-<?= $index ?>" class="collapse" aria-labelledby="heading-<?= $index ?>"
+                 data-parent="#accordion">
+                <div class="card-body">
+
+                    <?php foreach ($repository->getIssues() as $issue): ?>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <span class="badge badge-secondary">#<?= $this->e($issue->getNumber()) ?></span>
+                                    <a href="<?= $this->e($issue->getHtmlUrl()) ?>" target="_blank" class="ml-2">
+                                        <?= $this->e($issue->getTitle()) ?>
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                                <small>
+                                    created by
+                                    <a href="<?= $this->e($issue->getUser()->getHtmlUrl()) ?>" class="d-inline-block">
+                                        <?= $this->e($issue->getUser()->getLogin()) ?>
+                                    </a>
+                                </small>
+                            </div>
+                        </div>
+
+                    <?php endforeach; ?>
+
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+
+</div>

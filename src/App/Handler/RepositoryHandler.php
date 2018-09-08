@@ -47,12 +47,24 @@ class RepositoryHandler implements RequestHandlerInterface
         $repository = $request->getAttribute('repo');
 
         $requirements = $this->githubService->getRootRequirements($owner, $repository);
+
         $repositories = $this->packagistService->resolveRepositories($requirements);
         $this->githubService->loadIssuesForRepositories($repositories);
-        $rootPackage = $owner . '/' . $repository;
+        $rootRepository = array_shift($repositories);
+//
+//        $r = new Repository();
+//        $r->setName('fubar/package');
+//        $r->setPackageName('test/package');
+//        $r->setIssues(array_fill(1, 20, 'a'));
+//        $r->setUrl('https://github.com/test/package');
+//        $rootRepository = $r;
+//        $repositories = [];
 
         return new HtmlResponse($this->template->render('app::issues', [
-            'repositories' => $this->repositoryUtils->sortByLevenshteinDistance($rootPackage, $repositories)
+            'rootRepository' => $rootRepository,
+            'repositories'   => $this->repositoryUtils->sortByLevenshteinDistance(
+                $rootRepository->getName(), $repositories
+            )
         ]));
     }
 }

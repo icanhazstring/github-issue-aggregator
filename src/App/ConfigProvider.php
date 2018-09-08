@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Hydrator\Strategy\UserStrategyFactory;
+use League\Plates\Engine;
 use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
 /**
@@ -36,12 +36,13 @@ class ConfigProvider
     {
         return [
             'invokables' => [
-                Cache\ProviderCacheInterface::class => Cache\MemoryProviderCache::class,
-                Filter\RequirementFilter::class     => Filter\RequirementFilter::class,
-                \Packagist\Api\Client::class        => \Packagist\Api\Client::class,
-                Hydrator\RepositoryHydrator::class  => Hydrator\RepositoryHydrator::class,
+                Filter\RequirementFilter::class    => Filter\RequirementFilter::class,
+                \Packagist\Api\Client::class       => \Packagist\Api\Client::class,
+                Hydrator\RepositoryHydrator::class => Hydrator\RepositoryHydrator::class,
+                Utils\RepositoryUtils::class       => Utils\RepositoryUtils::class
             ],
             'factories'  => [
+                Engine::class                              => Renderer\PlatesEngineFactory::class,
                 Hydrator\IssueHydrator::class              => Hydrator\IssueHydratorFactory::class,
                 Hydrator\Strategy\UserStrategy::class      => Hydrator\Strategy\UserStrategyFactory::class,
                 \Github\Client::class                      => Client\GithubClientFactory::class,
@@ -67,6 +68,7 @@ class ConfigProvider
                 'app'    => ['templates/app'],
                 'error'  => ['templates/error'],
                 'layout' => ['templates/layout'],
+                'htdocs' => __DIR__ . '/../../public',
             ],
         ];
     }

@@ -1,0 +1,23 @@
+<?php
+/**
+ * @var string $clientId
+ */
+$this->layout('layout::default', ['title' => 'Home']);
+?>
+
+<h1 class="text-center text-uppercase">Aggregate Issues for your/repository</h1>
+
+<div>
+    <p>
+        To use this aggregation you will need to login with Github.
+    </p>
+
+    <form method="get" action="https://github.com/login/oauth/authorize">
+        <input type="hidden" name="scope" value="user:email"/>
+        <input type="hidden" name="client_id" value="<?= $this->e($clientId) ?>"/>
+        <button class="btn btn-primary btn-lg">
+            <i class="fab fa-github"></i>
+            Login with Github
+        </button>
+    </form>
+</div>

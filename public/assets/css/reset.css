@@ -1,0 +1,10 @@
+/* Change Autocomplete styles in Chrome*/
+:-webkit-autofill,
+:-webkit-autofill:hover,
+:-webkit-autofill:focus {
+    outline: inherit;
+    border: inherit;
+    -webkit-text-fill-color: inherit;
+    -webkit-box-shadow: inherit;
+    transition: background-color 5000s ease-in-out 0s;
+}

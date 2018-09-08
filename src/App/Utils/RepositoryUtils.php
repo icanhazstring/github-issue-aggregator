@@ -17,10 +17,9 @@ class RepositoryUtils
     {
         $calculator = new LevenshteinDistance();
 
-
         usort($repositories, function (Repository $a, Repository $b) use ($calculator, $rootPackage) {
-            $aDistance = $calculator->calculate($rootPackage, $a->getPackageName())['distance'];
-            $bDistance = $calculator->calculate($rootPackage, $b->getPackageName())['distance'];
+            $aDistance = $calculator->calculate($rootPackage, $a->getName())['distance'];
+            $bDistance = $calculator->calculate($rootPackage, $b->getName())['distance'];
 
             return $aDistance - $bDistance;
         });

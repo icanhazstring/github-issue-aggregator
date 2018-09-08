@@ -1,18 +1,20 @@
 <?php $this->layout('layout::default', ['title' => 'Home']) ?>
 
+<h1 class="text-center text-uppercase">Aggregate Issues for your/repository</h1>
+
 <div>
-    <form id="repo_form">
-        <label for="repo">Source Repository:</label>
-        https://github.com/<input style="width: 200px" name="repo" id="repo" type="text" title="Source Repository"/>
-        <button>Submit</button>
+    <form id="repo_form" class="d-flex flex-column align-items-stretch">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">https://github.com/</span>
+            </div>
+            <input name="repo" type="text" class="form-control" id="repo" aria-describedby="basic-addon3" title="">
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary btn-lg">Aggregate!</button>
+        </div>
     </form>
 </div>
-
-<?php if (!$hasToken): ?>
-<div>
-    <a id="login" href="https://github.com/login/oauth/authorize?scope=user:email&client_id=<?= $clientId ?>">Login with github</a>
-</div>
-<?php endif; ?>
 
 <script type="application/javascript">
     document.getElementById("repo_form").addEventListener("submit", function(event) {
