@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use League\Plates\Engine;
 use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
 /**
@@ -35,18 +36,23 @@ class ConfigProvider
     {
         return [
             'invokables' => [
-                Cache\ProviderCacheInterface::class => Cache\MemoryProviderCache::class,
-                Filter\RequirementFilter::class     => Filter\RequirementFilter::class,
-                \Github\Client::class               => \Github\Client::class,
-                \Packagist\Api\Client::class        => \Packagist\Api\Client::class
+                Filter\RequirementFilter::class    => Filter\RequirementFilter::class,
+                \Packagist\Api\Client::class       => \Packagist\Api\Client::class,
+                Hydrator\RepositoryHydrator::class => Hydrator\RepositoryHydrator::class,
+                Utils\RepositoryUtils::class       => Utils\RepositoryUtils::class
             ],
             'factories'  => [
+                Aspect\ProviderCacheAspect::class          => Aspect\ProviderCacheAspectFactory::class,
+                Engine::class                              => Renderer\PlatesEngineFactory::class,
+                Hydrator\IssueHydrator::class              => Hydrator\IssueHydratorFactory::class,
+                Hydrator\Strategy\UserStrategy::class      => Hydrator\Strategy\UserStrategyFactory::class,
+                \Github\Client::class                      => Client\GithubClientFactory::class,
                 Handler\AuthHandler::class                 => ReflectionBasedAbstractFactory::class,
                 Middleware\AuthenticationMiddleware::class => ReflectionBasedAbstractFactory::class,
-                Service\PackagistService::class            => ReflectionBasedAbstractFactory::class,
-                Provider\PackagistProvider::class          => ReflectionBasedAbstractFactory::class,
-                Service\GithubService::class               => ReflectionBasedAbstractFactory::class,
-                Provider\GithubProvider::class             => ReflectionBasedAbstractFactory::class,
+                Service\PackagistService::class            => Service\PackagistServiceFactory::class,
+                Provider\PackagistProvider::class          => Provider\PackagistProviderFactory::class,
+                Service\GithubService::class               => Service\GithubServiceFactory::class,
+                Provider\GithubProvider::class             => Provider\GithubProviderFactory::class,
                 Handler\HomePageHandler::class             => ReflectionBasedAbstractFactory::class,
                 Handler\RepositoryHandler::class           => ReflectionBasedAbstractFactory::class
             ],
@@ -63,6 +69,7 @@ class ConfigProvider
                 'app'    => ['templates/app'],
                 'error'  => ['templates/error'],
                 'layout' => ['templates/layout'],
+                'htdocs' => __DIR__ . '/../../public',
             ],
         ];
     }

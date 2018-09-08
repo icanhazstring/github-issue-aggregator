@@ -5,14 +5,23 @@ namespace App\Service;
 
 use App\Entity\Repository;
 use App\Provider\PackagistProvider;
+use Zend\Hydrator\HydratorInterface;
 
+/**
+ * Class PackagistService
+ *
+ * @package App\Service
+ * @author  icanhazstring <blubb0r05+github@gmail.com>
+ */
 class PackagistService
 {
     private $provider;
+    private $hydrator;
 
-    public function __construct(PackagistProvider $provider)
+    public function __construct(PackagistProvider $provider, HydratorInterface $hydrator)
     {
         $this->provider = $provider;
+        $this->hydrator = $hydrator;
     }
 
     /**
@@ -24,10 +33,13 @@ class PackagistService
         $repositories = [];
 
         foreach ($requirements as $packageName => $version) {
-            $repositories[] = new Repository([
-                'name'       => $this->resolvePackageName($packageName),
-                'repository' => $this->resolvePackageRepository($packageName)
-            ]);
+            $data = [
+                'package_name' => $packageName,
+                'name'         => $this->resolvePackageName($packageName),
+                'url'          => $this->resolvePackageRepository($packageName)
+            ];
+
+            $repositories[] = $this->hydrator->hydrate($data, new Repository());
         }
 
         return $repositories;

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AppTest\Service;
 
+use App\Hydrator\RepositoryHydrator;
 use App\Provider\PackagistProvider;
 use App\Service\PackagistService;
 use Packagist\Api\Result\Package;
@@ -19,9 +20,11 @@ class PackagistServiceTest extends TestCase
         $package = $this->prophesize(Package::class);
         $package->getRepository()->shouldBeCalled()->willReturn('https://test.url');
 
+        $hydrator = $this->prophesize(RepositoryHydrator::class);
+
         $provider = $this->prophesize(PackagistProvider::class);
         $provider->loadPackage('test/package')->shouldBeCalled()->willReturn($package->reveal());
-        $service = new PackagistService($provider->reveal());
+        $service = new PackagistService($provider->reveal(), $hydrator->reveal());
 
         $this->assertEquals('https://test.url', $service->resolvePackageRepository('test/package'));
     }
@@ -38,24 +41,21 @@ class PackagistServiceTest extends TestCase
         $package2 = $this->prophesize(Package::class);
         $package2->getRepository()->shouldBeCalled()->willReturn('https://github.com/test/realpackage2');
 
+        $hydrator = new RepositoryHydrator();
+
         $provider = $this->prophesize(PackagistProvider::class);
         $provider->loadPackage('test/package1')->shouldBeCalled()->willReturn($package1->reveal());
         $provider->loadPackage('test/package2')->shouldBeCalled()->willReturn($package2->reveal());
 
-        $service = new PackagistService($provider->reveal());
+        $service = new PackagistService($provider->reveal(), $hydrator);
 
         $repositories = $service->resolveRepositories(['test/package1' => '^2.0', 'test/package2' => '^1.0']);
         $this->assertCount(2, $repositories);
 
-        $this->assertEquals(
-            ['name' => 'test/realpackage1', 'repository' => 'https://github.com/test/realpackage1'],
-            $repositories[0]->getArrayCopy()
-        );
-
-        $this->assertEquals(
-            ['name' => 'test/realpackage2', 'repository' => 'https://github.com/test/realpackage2'],
-            $repositories[1]->getArrayCopy()
-        );
+        $this->assertEquals('test/realpackage1', $repositories[0]->getName());
+        $this->assertEquals('https://github.com/test/realpackage1', $repositories[0]->getUrl());
+        $this->assertEquals('test/realpackage2', $repositories[1]->getName());
+        $this->assertEquals('https://github.com/test/realpackage2', $repositories[1]->getUrl());
     }
 
     /**
@@ -67,10 +67,12 @@ class PackagistServiceTest extends TestCase
         $package = $this->prophesize(Package::class);
         $package->getRepository()->shouldBeCalled()->willReturn('https://github.com/test/package');
 
+        $hydrator = $this->prophesize(RepositoryHydrator::class);
+
         $provider = $this->prophesize(PackagistProvider::class);
         $provider->loadPackage('test/awesomepackage')->shouldBeCalled()->willReturn($package->reveal());
 
-        $service = new PackagistService($provider->reveal());
+        $service = new PackagistService($provider->reveal(), $hydrator->reveal());
         $this->assertEquals('test/package', $service->resolvePackageName('test/awesomepackage'));
     }
 }

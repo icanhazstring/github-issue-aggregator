@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Go\Zend\Expressive\Middleware\AspectMiddleware;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
 use Zend\Expressive\Handler\NotFoundHandler;
@@ -13,6 +14,7 @@ use Zend\Expressive\Router\Middleware\ImplicitHeadMiddleware;
 use Zend\Expressive\Router\Middleware\ImplicitOptionsMiddleware;
 use Zend\Expressive\Router\Middleware\MethodNotAllowedMiddleware;
 use Zend\Expressive\Router\Middleware\RouteMiddleware;
+use Zend\Expressive\Session\SessionMiddleware;
 use Zend\Stratigility\Middleware\ErrorHandler;
 
 /**
@@ -65,7 +67,8 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // - route-based authentication
     // - route-based validation
     // - etc.
-    $app->pipe(\Zend\Expressive\Session\SessionMiddleware::class);
+    $app->pipe(SessionMiddleware::class);
+    $app->pipe(AspectMiddleware::class);
 
     // Register the dispatch middleware in the middleware pipeline
     $app->pipe(DispatchMiddleware::class);

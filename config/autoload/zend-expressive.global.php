@@ -12,7 +12,22 @@ return [
     ConfigAggregator::ENABLE_CACHE => true,
 
     // Enable debugging; typically used to provide debugging information within templates.
-    'debug' => false,
+    'debug'                        => false,
+
+    'goaop_module' => [
+        'appDir'       => __DIR__ . '/../../',
+        'cacheDir'     => __DIR__ . '/../../data/cache',
+        'includePaths' => [
+            __DIR__ . '/../../src/App/Provider'
+        ],
+        'excludePaths' => [
+            __DIR__ . '/../../vendor'
+        ]
+    ],
+
+    'goaop_aspect' => [
+        \App\Aspect\ProviderCacheAspect::class
+    ],
 
     'zend-expressive' => [
         // Provide templates for the error handling middleware to use when

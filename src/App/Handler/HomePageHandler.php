@@ -26,10 +26,16 @@ class HomePageHandler implements RequestHandlerInterface
     {
         /** @var SessionInterface $sesison */
         $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
+        $hasToken = $session->has(AuthenticationMiddleware::AUTH_TOKEN);
+
+        if (!$hasToken) {
+            return new HtmlResponse($this->template->render('app::login', [
+                'clientId' => $request->getServerParams()['GITHUB_CLIENT_ID'],
+            ]));
+        }
 
         return new HtmlResponse($this->template->render('app::home', [
-            'clientId' => $request->getServerParams()['GITHUB_CLIENT_ID'],
-            'hasToken' => $session->has(AuthenticationMiddleware::AUTH_TOKEN)
+            'hasToken' => $hasToken
         ]));
     }
 }
