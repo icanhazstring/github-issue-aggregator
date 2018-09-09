@@ -9,6 +9,7 @@
     "require": {
         "php": "^7.1",
         "ext-json": "*",
+        "ext-redis": "*",
         "goaop/framework": "^2.2",
         "goaop/goaop-zend-expressive-middleware": "^3.0",
         "jfcherng/php-levenshtein-distance": "^2.3",
