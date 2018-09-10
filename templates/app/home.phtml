@@ -1,19 +1,50 @@
 <?php $this->layout('layout::default', ['title' => 'Home']) ?>
 
-<h1 class="text-center text-uppercase">Aggregate Issues for your/repository</h1>
+<div class="jumbotron">
+    <h1 class="display-4 text-center text-uppercase">Aggregate issues for a composer repository</h1>
 
-<div>
-    <form id="repo_form" class="d-flex flex-column align-items-stretch">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3">https://github.com/</span>
+    <div class="card mb-3">
+        <div class="card-header bg-warning">
+            Early state notice
+        </div>
+        <div class="card-body">
+            <p class="card-text">
+                This tool is in a <b>prototypical</b> state. You will most likely encounter some bugs. Please file me an issue if you found one.
+            </p>
+
+            <a class="btn btn-secondary" href="https://github.com/icanhazstring/github-issue-aggregator/issues/new">
+                <i class="fab fa-github"></i>
+                File an issue
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div>
+                The repository needs to fullfil these requirements:
+                <ul>
+                    <li>
+                        The name is the one from github
+                        <small>(https://github.com/<mark>your/repo</mark>)</small>
+                    </li>
+                    <li>Has a <mark>composer.json</mark></li>
+                </ul>
             </div>
-            <input name="repo" type="text" class="form-control" id="repo" aria-describedby="basic-addon3" title="">
+
+            <form id="repo_form" class="d-flex flex-column align-items-stretch">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon3">https://github.com/</span>
+                    </div>
+                    <input name="repo" type="text" class="form-control" id="repo" aria-describedby="basic-addon3" title="">
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary btn-lg">Aggregate!</button>
+                </div>
+            </form>
         </div>
-        <div class="text-center">
-            <button class="btn btn-primary btn-lg">Aggregate!</button>
-        </div>
-    </form>
+    </div>
 </div>
 
 <script type="application/javascript">
