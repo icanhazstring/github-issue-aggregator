@@ -54,7 +54,7 @@
             "@test",
             "@analyze"
         ],
-        "analyze": "phpstan analyze -l max -c ./phpstan.installer.neon ./src ./config",
+        "analyze": "phpstan analyze -c phpstan.neon --no-progress -l max ./src ./config",
         "clear-config-cache": "php bin/clear-config-cache.php",
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
