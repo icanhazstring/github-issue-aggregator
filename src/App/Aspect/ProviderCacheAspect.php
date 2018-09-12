@@ -53,13 +53,11 @@ class ProviderCacheAspect implements Aspect
     {
         $arguments = $invocation->getArguments();
         $arguments = array_map(function ($argument) {
-
             if (\is_array($argument)) {
                 $argument = implode('', $argument);
             }
 
             return $argument;
-
         }, $arguments);
 
         return implode('', $arguments);

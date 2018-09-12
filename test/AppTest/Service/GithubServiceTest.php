@@ -19,6 +19,7 @@ class GithubServiceTest extends TestCase
     public function itShouldReturnValidRequirements(): void
     {
         $input = [
+            'name' => 'test/repo',
             'require' => [
                 'owner/repo' => '^2.0',
                 'php' => '^7.1'
@@ -30,7 +31,8 @@ class GithubServiceTest extends TestCase
 
         $expected = [
             'owner/repo' => '^2.0',
-            'test/fubar' => '^2.0'
+            'test/fubar' => '^2.0',
+            'test/repo' => '*'
         ];
 
         $provider = $this->prophesize(GithubProvider::class);

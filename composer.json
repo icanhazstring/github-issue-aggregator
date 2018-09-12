@@ -25,7 +25,7 @@
         "zendframework/zend-expressive-platesrenderer": "^2.0",
         "zendframework/zend-expressive-session": "^1.0",
         "zendframework/zend-expressive-session-ext": "^1.1",
-        "zendframework/zend-form": "^2.12",
+        "zendframework/zend-filter": "^2.8",
         "zendframework/zend-hydrator": "^2.4",
         "zendframework/zend-servicemanager": "^3.3",
         "zendframework/zend-stdlib": "^3.1"
@@ -36,9 +36,7 @@
         "phpstan/phpstan": "^0.9",
         "phpunit/phpunit": "^7.0.1",
         "roave/security-advisories": "dev-master",
-        "squizlabs/php_codesniffer": "^2.9.1",
-        "zendframework/zend-expressive-tooling": "^1.0",
-        "zfcampus/zf-development-mode": "^3.1"
+        "squizlabs/php_codesniffer": "^2.9.1"
     },
     "autoload": {
         "psr-4": {
@@ -56,11 +54,10 @@
             "@test",
             "@analyze"
         ],
-        "analyze": "phpstan analyze -l max -c ./phpstan.installer.neon ./src ./config",
+        "analyze": "phpstan analyze -c phpstan.neon --no-progress -l max ./src ./config",
         "clear-config-cache": "php bin/clear-config-cache.php",
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
-        "serve": "php -S 0.0.0.0:8080 -t public/",
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
     }
