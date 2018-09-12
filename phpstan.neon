@@ -1,0 +1,3 @@
+parameters:
+	ignoreErrors:
+		- '#object of function get_class expects object#'

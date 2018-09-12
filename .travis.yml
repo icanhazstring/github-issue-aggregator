@@ -1,0 +1,21 @@
+language: php
+php:
+- 7.1
+
+sudo: false
+
+cache:
+  directories:
+  - $HOME/.composer/cache
+
+matrix:
+  fast_finish: true
+
+before_script:
+ - composer install --no-interaction
+
+before_install:
+  echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
+script:
+ - composer check
