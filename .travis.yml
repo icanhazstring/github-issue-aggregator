@@ -11,8 +11,11 @@ cache:
 matrix:
   fast_finish: true
 
+services:
+  - redis-server
+
 before_script:
-- composer install --no-interaction
+ - composer install --no-interaction
 
 script:
-- composer check
+ - composer check
