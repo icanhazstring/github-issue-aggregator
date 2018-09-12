@@ -11,11 +11,11 @@ cache:
 matrix:
   fast_finish: true
 
-services:
-  - redis-server
-
 before_script:
  - composer install --no-interaction
+
+before_install:
+  echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
  - composer check
