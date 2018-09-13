@@ -14,7 +14,12 @@ use Go\Lang\Annotation\Around;
 class ProviderCacheAspect implements Aspect
 {
     private $cache;
+    private $enabled;
 
+    /**
+     * ProviderCacheAspect constructor.
+     * @param CacheProvider $cache
+     */
     public function __construct(CacheProvider $cache)
     {
         $this->cache = $cache;
@@ -36,7 +41,7 @@ class ProviderCacheAspect implements Aspect
 
         $cacheKey = strtolower($cacheKey);
 
-        if (!$this->cache->contains($cacheKey)) {
+        if (!$this->enabled || !$this->cache->contains($cacheKey)) {
             $this->cache->save($cacheKey, $invocation->proceed());
         }
 
@@ -61,5 +66,13 @@ class ProviderCacheAspect implements Aspect
         }, $arguments);
 
         return implode('', $arguments);
+    }
+
+    /**
+     * @param bool $isEnabled
+     */
+    public function setEnabled(bool $isEnabled): void
+    {
+        $this->enabled = $isEnabled;
     }
 }

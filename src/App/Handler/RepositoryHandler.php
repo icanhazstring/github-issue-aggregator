@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Aspect\ProviderCacheAspect;
 use App\Service\GithubService;
 use App\Service\PackagistService;
 use App\Utils\RepositoryUtils;
@@ -24,17 +25,20 @@ class RepositoryHandler implements RequestHandlerInterface
     private $githubService;
     private $packagistService;
     private $repositoryUtils;
+    private $providerCacheAspect;
 
     public function __construct(
         Template\TemplateRendererInterface $template,
         GithubService $githubService,
         PackagistService $packagistService,
-        RepositoryUtils $repositoryUtils
+        RepositoryUtils $repositoryUtils,
+        ProviderCacheAspect $providerCacheAspect
     ) {
         $this->template = $template;
         $this->githubService = $githubService;
         $this->packagistService = $packagistService;
         $this->repositoryUtils = $repositoryUtils;
+        $this->providerCacheAspect = $providerCacheAspect;
     }
 
     /**
@@ -45,9 +49,11 @@ class RepositoryHandler implements RequestHandlerInterface
     {
         $owner = $request->getAttribute('owner');
         $repository = $request->getAttribute('repo');
+        $useCache = $request->getQueryParams()['cache'] ?? true;
+
+        $this->providerCacheAspect->setEnabled($useCache !== 'false');
 
         $requirements = $this->githubService->getRootRequirements($owner, $repository);
-
         $repositories = $this->packagistService->resolveRepositories($requirements);
         $this->githubService->loadIssuesForRepositories($repositories);
         $rootRepository = array_shift($repositories);
