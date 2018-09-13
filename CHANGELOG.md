@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0
+#### Added
+- Add option to ignore cache and rewrite it
+
+#### Changed
+*none*
+
+#### Fixed
+*none*
+
 
 ## 0.2.0
 
