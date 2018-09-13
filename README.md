@@ -30,5 +30,5 @@ The general functionality is very simple.
 See [CONTRIBUTE.md](CONTRIBUTE.md).
 
 ## Credits
- - [@movetodevnull]() for hosting PHPUnit CodeSprint
- - [@sebastianbergmann]() for the general idea
+ - [@sebastianfeldmann](https://github.com/sebastianfeldmann) for hosting PHPUnit CodeSprint at [@CHECK24](https://github.com/CHECK24)
+ - [@sebastianbergmann](https://github.com/sebastianbergmann) for the general idea
