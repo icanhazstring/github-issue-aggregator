@@ -38,6 +38,14 @@
                         <span class="input-group-text" id="basic-addon3">https://github.com/</span>
                     </div>
                     <input name="repo" type="text" class="form-control" id="repo" aria-describedby="basic-addon3" title="">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <label class="mb-0" data-toggle="tooltip" data-placement="top" title="This may take some time to refresh the issue cache">
+                                <input id="cache" type="checkbox" aria-label="Reset cache">
+                                Force reload
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="text-center">
                     <button class="btn btn-primary btn-lg">Aggregate!</button>
@@ -50,10 +58,12 @@
 <script type="application/javascript">
     document.getElementById("repo_form").addEventListener("submit", function(event) {
         let repo = document.getElementById("repo").value;
+        let forceCache = document.getElementById("cache").checked;
+
         event.preventDefault();
 
         if (repo) {
-            window.open("/repo/" + repo);
+            window.open("/repo/" + repo + '?cache=' + !forceCache);
         }
     });
 </script>
